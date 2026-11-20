@@ -1,0 +1,115 @@
+@import "tailwindcss" source("../");
+
+@theme {
+  --font-sans: "Segoe UI", system-ui, sans-serif;
+  --color-canvas: #14141b;
+  --color-surface: #1b1b25;
+  --color-raised: #242433;
+  --color-line: #30303e;
+  --color-ink: #f2f0f7;
+  --color-muted: #aba9bd;
+  --color-accent: #c1afff;
+  --color-primary: #ac93fc;
+  --color-primary-hover: #c0adff;
+  --color-on-primary: #20143a;
+  --color-error: #ffb3c1;
+  --color-danger: #a6304a;
+  --color-danger-hover: #b83a55;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply min-h-screen bg-canvas font-sans text-ink antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  input[type="search"]::-webkit-search-cancel-button,
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+@layer components {
+  .brand-mark, .workspace-mark {
+    @apply grid shrink-0 place-items-center rounded-lg border;
+    color: var(--workspace-tone, var(--color-accent));
+    background: color-mix(in srgb, currentColor 10%, var(--color-surface));
+    border-color: color-mix(in srgb, currentColor 22%, var(--color-surface));
+  }
+
+  .brand-mark { @apply size-9; }
+  .workspace-mark { @apply size-9; }
+  [data-color="Violet"] { --workspace-tone: #c1afff; }
+  [data-color="Mint"] { --workspace-tone: #86debe; }
+  [data-color="Amber"] { --workspace-tone: #f3c27d; }
+  [data-color="Sky"] { --workspace-tone: #93c7ff; }
+
+  .nav-button {
+    @apply flex min-h-10 min-w-0 cursor-pointer items-center justify-center gap-1 rounded-t-md border-b-2 border-transparent px-1 text-xs font-medium text-muted transition-colors duration-150 motion-reduce:transition-none;
+  }
+  .nav-button:hover { @apply bg-surface text-ink; }
+  .nav-button[aria-current] { @apply border-accent text-accent; }
+  .nav-button:focus-visible { outline-offset: -3px; }
+
+  .page-title { @apply text-[24px] font-semibold leading-8 tracking-tight; }
+
+  .icon-button {
+    @apply inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-lg text-muted transition-colors duration-150 motion-reduce:transition-none;
+  }
+  .icon-button:hover, details[open] > .icon-button { @apply bg-raised text-ink; }
+
+  .button-primary, .button-secondary, .button-danger {
+    @apply inline-flex min-h-10 cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-colors duration-150 disabled:cursor-wait disabled:opacity-60 motion-reduce:transition-none;
+  }
+  .button-primary { @apply bg-primary text-on-primary hover:bg-primary-hover; }
+  .button-secondary { @apply border border-line bg-surface text-ink hover:bg-raised; }
+  .button-danger { @apply bg-danger text-white hover:bg-danger-hover; }
+  .workspace-option {
+    @apply cursor-pointer rounded-md px-2.5 py-2 text-left text-sm hover:bg-surface;
+  }
+
+  .search-field {
+    @apply flex h-11 items-center gap-2 rounded-lg border border-line bg-surface px-3;
+  }
+  .search-field:focus-within { @apply border-accent; }
+  .search-field input {
+    @apply h-full min-w-0 flex-1 bg-transparent text-sm text-ink placeholder:text-muted;
+    outline: none;
+  }
+
+  .workspace-card {
+    @apply rounded-xl border border-line bg-surface px-3 py-3 transition-colors duration-150 motion-reduce:transition-none;
+  }
+  .workspace-card:hover { @apply border-accent/30; }
+  .restore-button {
+    @apply inline-flex min-h-8 cursor-not-allowed items-center gap-1 rounded-md px-1.5 text-xs font-medium text-muted;
+  }
+
+  .create-dialog {
+    @apply fixed inset-0 m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-sm overflow-y-auto rounded-xl border border-line bg-raised p-4 text-ink shadow-2xl sm:p-5;
+  }
+  .create-dialog::backdrop { background: rgb(9 9 14 / 76%); }
+  .field-label { @apply mb-1.5 block text-sm font-medium; }
+  .form-field {
+    @apply block min-h-10 w-full rounded-lg border border-line bg-canvas px-3 py-2 text-sm text-ink placeholder:text-muted;
+  }
+  .form-field[aria-invalid] { @apply border-error; }
+  .color-option {
+    @apply grid size-9 cursor-pointer place-items-center rounded-lg border border-transparent;
+    background: color-mix(in srgb, var(--workspace-tone) 12%, var(--color-canvas));
+    color: var(--workspace-tone);
+  }
+  .color-option:hover, .color-option:has(:checked) { border-color: currentColor; }
+  .color-option:has(:focus-visible) {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+}

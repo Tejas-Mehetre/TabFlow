@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "TabFlow",
+  "version": "0.1.0",
+  "description": "AI-assisted browser workspace and tab management",
+  "minimum_chrome_version": "114",
+  "permissions": ["sidePanel", "storage"],
+  "action": {
+    "default_title": "Open TabFlow"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  }
+}
