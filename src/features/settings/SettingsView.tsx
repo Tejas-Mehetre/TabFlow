@@ -17,11 +17,8 @@ export function SettingsView() {
         </p>
       </div>
       <div className="mt-3 rounded-xl border border-line bg-surface p-4">
-        <h2 className="text-sm font-semibold">Coming soon</h2>
-        <ul className="mt-2 list-inside list-disc space-y-1 text-sm leading-6 text-muted">
-          <li>Tab capture and restoration</li>
-          <li>Search across saved tabs</li>
-        </ul>
+        <h2 className="text-sm font-semibold">Smart Organizer</h2>
+        <p className="mt-2 text-sm leading-6 text-muted">Groups tabs from the current window using offline rules. You review the proposal before any workspace is saved.</p>
       </div>
     </section>
   )

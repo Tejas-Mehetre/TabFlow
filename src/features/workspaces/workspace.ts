@@ -10,9 +10,19 @@ export interface WorkspaceDraft {
   color: WorkspaceColor
 }
 
+export interface SavedTab {
+  id: string
+  url: string
+  title: string
+  index: number
+}
+
+export type TabCandidate = Pick<SavedTab, 'url' | 'title'>
+
 export interface Workspace extends WorkspaceDraft {
   id: string
   icon: (typeof workspaceIcons)[number]
+  tabs: SavedTab[]
   tabCount: number
   createdAt: string
   updatedAt: string

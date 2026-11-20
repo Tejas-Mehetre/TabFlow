@@ -12,7 +12,8 @@
     "build": "tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --max-warnings 0",
-    "test:dashboard": "node --test tests/dashboard.test.mjs"
+    "test:dashboard": "node --test tests/dashboard.test.mjs",
+    "test:organizer": "node --test tests/organizer.test.mjs"
   },
   "dependencies": {
     "react": "^19.3.1",

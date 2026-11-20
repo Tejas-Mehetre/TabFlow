@@ -3,7 +3,9 @@ import { AppShell } from '../components/AppShell'
 import type { View } from '../components/AppShell'
 import { Icon } from '../components/ui/Icon'
 import { WorkspaceStats } from '../features/dashboard/WorkspaceStats'
+import { SmartOrganizer } from '../features/ai/SmartOrganizer'
 import { SettingsView } from '../features/settings/SettingsView'
+import { WorkspaceDetails } from '../features/workspaces/WorkspaceDetails'
 import { WorkspaceDialog } from '../features/workspaces/WorkspaceDialog'
 import { WorkspaceFormDialog } from '../features/workspaces/WorkspaceFormDialog'
 import { WorkspaceLibrary } from '../features/workspaces/WorkspaceLibrary'
@@ -11,7 +13,7 @@ import { useWorkspaces } from '../features/workspaces/useWorkspaces'
 import type { Workspace, WorkspaceDraft } from '../features/workspaces/workspace'
 import { createWorkspace, deleteWorkspace, updateWorkspace } from '../services/workspaceStorage'
 
-type Dialog = { kind: 'create' } | { kind: 'edit' | 'delete'; workspace: Workspace }
+type Dialog = { kind: 'create' | 'organizer' } | { kind: 'details'; id: string; tabId?: string } | { kind: 'edit' | 'delete'; workspace: Workspace }
 
 export function App() {
   const { state, refresh, retry } = useWorkspaces()
@@ -90,6 +92,10 @@ export function App() {
             onClick={(event) => openDialog({ kind: 'create' }, event.currentTarget)}>
             <Icon name="plus" /> New Workspace
           </button>
+          {view === 'dashboard' && (
+            <button type="button" className="button-secondary mt-2 w-full" disabled={state.status !== 'ready'}
+              onClick={(event) => openDialog({ kind: 'organizer' }, event.currentTarget)}>Organize with AI</button>
+          )}
           <div role="status" className={notice ? 'mt-3 text-sm text-accent' : 'sr-only'}>{notice}</div>
           {state.status === 'loading' && (
             <p role="status" className="mt-5 rounded-xl border border-line bg-surface p-4 text-sm text-muted">
@@ -107,13 +113,25 @@ export function App() {
               {view === 'dashboard' && <WorkspaceStats workspaces={state.workspaces} />}
               <WorkspaceLibrary workspaces={state.workspaces} query={query} onQueryChange={setQuery}
                 onCreate={(event) => openDialog({ kind: 'create' }, event.currentTarget)}
+                onView={(workspace, trigger, tabId) => openDialog({ kind: 'details', id: workspace.id, tabId }, trigger)}
                 onEdit={(workspace, trigger) => openDialog({ kind: 'edit', workspace }, trigger)}
                 onDelete={(workspace, trigger) => openDialog({ kind: 'delete', workspace }, trigger)} />
             </>
           )}
         </>
       )}
-      {dialog?.kind === 'delete' ? (
+      {dialog?.kind === 'organizer' ? (
+        <SmartOrganizer existingNames={state.status === 'ready' ? state.workspaces.map(({ name }) => name) : []}
+          onClose={closeDialog} onSaved={async (count) => {
+            await refresh()
+            setQuery('')
+            closeDialog()
+            setNotice(`Saved ${count} organized ${count === 1 ? 'workspace' : 'workspaces'}.`)
+          }} />
+      ) : dialog?.kind === 'details' ? (
+        <WorkspaceDetails workspace={state.status === 'ready' ? state.workspaces.find(({ id }) => id === dialog.id) : undefined}
+          selectedTabId={dialog.tabId} onClose={closeDialog} onSaved={refresh} />
+      ) : dialog?.kind === 'delete' ? (
         <WorkspaceDialog title="Delete workspace?" busy={busy} onClose={closeDialog}
           description={`Delete “${dialog.workspace.name}”? This action is permanent.`}>
           {mutationError && <p role="alert" className="mt-3 text-sm text-error">{mutationError}</p>}

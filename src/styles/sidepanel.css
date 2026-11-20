@@ -89,9 +89,6 @@
     @apply rounded-xl border border-line bg-surface px-3 py-3 transition-colors duration-150 motion-reduce:transition-none;
   }
   .workspace-card:hover { @apply border-accent/30; }
-  .restore-button {
-    @apply inline-flex min-h-8 cursor-not-allowed items-center gap-1 rounded-md px-1.5 text-xs font-medium text-muted;
-  }
 
   .create-dialog {
     @apply fixed inset-0 m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-sm overflow-y-auto rounded-xl border border-line bg-raised p-4 text-ink shadow-2xl sm:p-5;

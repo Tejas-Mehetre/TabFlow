@@ -25,9 +25,9 @@ export function WorkspaceDialog({ title, description, busy, onClose, children }:
         event.preventDefault()
         if (!busy) onClose()
       }}>
-      <h2 id="workspace-dialog-title" className="text-lg font-semibold tracking-tight">{title}</h2>
+      <h2 id="workspace-dialog-title" className="wrap-anywhere text-lg font-semibold tracking-tight">{title}</h2>
       {description && (
-        <p id="workspace-dialog-description" className="mt-2 break-anywhere text-sm leading-6 text-muted">{description}</p>
+        <p id="workspace-dialog-description" className="mt-2 wrap-anywhere text-sm leading-6 text-muted">{description}</p>
       )}
       {children}
     </dialog>

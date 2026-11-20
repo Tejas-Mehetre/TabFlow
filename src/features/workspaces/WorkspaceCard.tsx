@@ -6,11 +6,12 @@ const dateFormat = new Intl.DateTimeFormat('en', { dateStyle: 'medium' })
 
 interface WorkspaceCardProps {
   workspace: Workspace
+  onView: (workspace: Workspace, opener: HTMLElement) => void
   onEdit: (workspace: Workspace, opener: HTMLElement) => void
   onDelete: (workspace: Workspace, opener: HTMLElement) => void
 }
 
-export function WorkspaceCard({ workspace, onEdit, onDelete }: WorkspaceCardProps) {
+export function WorkspaceCard({ workspace, onView, onEdit, onDelete }: WorkspaceCardProps) {
   const options = useRef<HTMLDetailsElement>(null)
   const trigger = useRef<HTMLElement>(null)
   const { name, description, color, icon, tabCount, updatedAt } = workspace
@@ -29,9 +30,9 @@ export function WorkspaceCard({ workspace, onEdit, onDelete }: WorkspaceCardProp
         <div className="flex items-start gap-3">
           <div className="workspace-mark" data-color={color}><Icon name={icon} /></div>
           <div className="min-w-0 flex-1 py-0.5">
-            <h3 className="break-anywhere text-sm font-semibold leading-5">{name}</h3>
+            <h3 className="wrap-anywhere text-sm font-semibold leading-5">{name}</h3>
             {description && (
-              <p className="mt-1 break-anywhere text-xs leading-[1.4rem] text-muted">{description}</p>
+              <p className="mt-1 wrap-anywhere text-xs leading-[1.4rem] text-muted">{description}</p>
             )}
           </div>
           <details ref={options} className="relative shrink-0"
@@ -63,9 +64,9 @@ export function WorkspaceCard({ workspace, onEdit, onDelete }: WorkspaceCardProp
               {dateFormat.format(updated)}
             </time>
           </p>
-          <button type="button" disabled className="restore-button"
-            aria-label={`Restore ${name} (coming soon)`}>
-            <Icon name="restore" className="size-3.5" /> Restore soon
+          <button type="button" className="workspace-option min-h-8 text-xs"
+            aria-label={`View workspace ${name}`} onClick={(event) => onView(workspace, event.currentTarget)}>
+            View workspace
           </button>
         </div>
       </article>
